@@ -54,9 +54,11 @@ public class SampleTimesSquareActivity extends Activity {
             .inMode(SelectionMode.MULTIPLE) //
             .withSelectedDates(dates);
 
+    initButtonListeners();
+
   }
 
-  private void initButtonListeners(final Calendar nextYear, final Calendar lastYear) {
+  private void initButtonListeners() {
 /*
     final Button single = (Button) findViewById(R.id.button_single);
     final Button multi = (Button) findViewById(R.id.button_multi);
