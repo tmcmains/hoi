@@ -37,21 +37,27 @@ public class SampleTimesSquareActivity extends Activity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.sample_calendar_picker);
 
-    final Calendar nextYear = Calendar.getInstance();
-    nextYear.add(Calendar.YEAR, 1);
+    Calendar start = Calendar.getInstance();
+    start.add(Calendar.YEAR, -3);
 
-    final Calendar lastYear = Calendar.getInstance();
-    lastYear.add(Calendar.YEAR, -1);
+    Calendar end = Calendar.getInstance();
+    end.add(Calendar.YEAR, 3);
 
     calendar = (CalendarPickerView) findViewById(R.id.calendar_view);
-    calendar.init(lastYear.getTime(), nextYear.getTime()) //
-        .inMode(SelectionMode.SINGLE) //
-        .withSelectedDate(new Date());
+    calendar.setCustomDayView(new DefaultDayViewAdapter());
+    Calendar today = Calendar.getInstance();
+    ArrayList<Date> dates = new ArrayList<Date>();
+    dates.add(today.getTime());
 
-    initButtonListeners(nextYear, lastYear);
+    calendar.setDecorators(Collections.<CalendarCellDecorator>emptyList());
+    calendar.init(start.getTime(), end.getTime()) //
+            .inMode(SelectionMode.MULTIPLE) //
+            .withSelectedDates(dates);
+
   }
 
   private void initButtonListeners(final Calendar nextYear, final Calendar lastYear) {
+/*
     final Button single = (Button) findViewById(R.id.button_single);
     final Button multi = (Button) findViewById(R.id.button_multi);
     final Button range = (Button) findViewById(R.id.button_range);
@@ -62,38 +68,8 @@ public class SampleTimesSquareActivity extends Activity {
     final Button hebrew = (Button) findViewById(R.id.button_hebrew);
     final Button arabic = (Button) findViewById(R.id.button_arabic);
     final Button customView = (Button) findViewById(R.id.button_custom_view);
-
     modeButtons.addAll(Arrays.asList(single, multi, range, displayOnly, decorator, customView));
 
-    single.setOnClickListener(new OnClickListener() {
-      @Override public void onClick(View v) {
-        setButtonsEnabled(single);
-
-        calendar.setCustomDayView(new DefaultDayViewAdapter());
-        calendar.setDecorators(Collections.<CalendarCellDecorator>emptyList());
-        calendar.init(lastYear.getTime(), nextYear.getTime()) //
-            .inMode(SelectionMode.SINGLE) //
-            .withSelectedDate(new Date());
-      }
-    });
-
-    multi.setOnClickListener(new OnClickListener() {
-      @Override public void onClick(View v) {
-        setButtonsEnabled(multi);
-
-        calendar.setCustomDayView(new DefaultDayViewAdapter());
-        Calendar today = Calendar.getInstance();
-        ArrayList<Date> dates = new ArrayList<Date>();
-        for (int i = 0; i < 5; i++) {
-          today.add(Calendar.DAY_OF_MONTH, 3);
-          dates.add(today.getTime());
-        }
-        calendar.setDecorators(Collections.<CalendarCellDecorator>emptyList());
-        calendar.init(new Date(), nextYear.getTime()) //
-            .inMode(SelectionMode.MULTIPLE) //
-            .withSelectedDates(dates);
-      }
-    });
 
     range.setOnClickListener(new OnClickListener() {
       @Override public void onClick(View v) {
@@ -182,8 +158,8 @@ public class SampleTimesSquareActivity extends Activity {
                 .withSelectedDate(new Date());
       }
     });
-
-    findViewById(R.id.done_button).setOnClickListener(new OnClickListener() {
+*/
+  findViewById(R.id.done_button).setOnClickListener(new OnClickListener() {
       @Override public void onClick(View view) {
         Log.d(TAG, "Selected time in millis: " + calendar.getSelectedDate().getTime());
         String toast = "Selected: " + calendar.getSelectedDate().getTime();
@@ -192,6 +168,8 @@ public class SampleTimesSquareActivity extends Activity {
     });
   }
 
+
+/*
   private void showCalendarInDialog(String title, int layoutResId) {
     dialogView = (CalendarPickerView) getLayoutInflater().inflate(layoutResId, null, false);
     theDialog = new AlertDialog.Builder(this) //
@@ -212,12 +190,6 @@ public class SampleTimesSquareActivity extends Activity {
     theDialog.show();
   }
 
-  private void setButtonsEnabled(Button currentButton) {
-    for (Button modeButton : modeButtons) {
-      modeButton.setEnabled(modeButton != currentButton);
-    }
-  }
-
   @Override public void onConfigurationChanged(Configuration newConfig) {
     boolean applyFixes = theDialog != null && theDialog.isShowing();
     if (applyFixes) {
@@ -233,5 +205,8 @@ public class SampleTimesSquareActivity extends Activity {
         }
       });
     }
+
+
   }
+   */
 }
