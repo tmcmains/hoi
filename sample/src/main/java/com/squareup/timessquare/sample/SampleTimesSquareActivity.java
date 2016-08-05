@@ -23,6 +23,9 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Set;
+import java.util.List;
+import java.io.*;
+import android.content.Context;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
@@ -46,8 +49,21 @@ public class SampleTimesSquareActivity extends Activity {
     calendar = (CalendarPickerView) findViewById(R.id.calendar_view);
     calendar.setCustomDayView(new DefaultDayViewAdapter());
     Calendar today = Calendar.getInstance();
-    ArrayList<Date> dates = new ArrayList<Date>();
-    dates.add(today.getTime());
+    //ArrayList<Date> dates = new ArrayList<Date>();
+    //dates.add(today.getTime());
+    ArrayList<Date> dates= new ArrayList<Date>();
+
+    String filename = "hoi";
+    try {
+      FileInputStream in = openFileInput(filename);
+      ObjectInputStream ois = new ObjectInputStream(in);
+      dates = (ArrayList<Date>) (ois.readObject());
+    }
+    catch (Exception e)
+    {
+      e.printStackTrace();
+
+    }
 
     calendar.setDecorators(Collections.<CalendarCellDecorator>emptyList());
     calendar.init(start.getTime(), end.getTime()) //
@@ -163,10 +179,21 @@ public class SampleTimesSquareActivity extends Activity {
 */
   findViewById(R.id.done_button).setOnClickListener(new OnClickListener() {
       @Override public void onClick(View view) {
-        Log.d(TAG, "Selected time in millis: " + calendar.getSelectedDate().getTime());
-        String toast = "Selected: " + calendar.getSelectedDate().getTime();
-        Toast.makeText(SampleTimesSquareActivity.this, toast, LENGTH_SHORT).show();
-      }
+
+        String filename = "hoi";
+        FileOutputStream outputStream;
+
+        try {
+          outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+          ObjectOutputStream oos = new ObjectOutputStream(outputStream);
+          oos.writeObject (calendar.getSelectedDates());
+          oos.close();
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+
+        finish();
+        System.exit(0);      }
     });
   }
 
